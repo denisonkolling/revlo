@@ -1,7 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ReviewService } from './review.service';
 
-@Controller('review')
+@Controller('reviews')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) {}
+  constructor(private readonly reviewService: ReviewService) { }
+
+  @Get()
+  async getReviews(@Query('placeId') placeId: string) {
+    return await this.reviewService.getReviews(placeId);
+  }
 }
