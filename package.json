@@ -2,7 +2,17 @@
   "name": "@revlo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "nx run-many -t lint -p frontend backend --max-warnings 0",
+    "lint:fix": "nx run-many -t lint -p frontend backend --fix --max-warnings 0",
+    "lint:all": "nx run-many -t lint --all --max-warnings 0",
+    "lint:fix:all": "nx run-many -t lint --all --fix --max-warnings 0",
+    "build": "nx run-many -t build -p frontend backend",
+    "serve": "nx run-many -t serve -p frontend backend",
+    "frontend": "nx run frontend:serve",
+    "backend": "nx run backend:serve"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~18.2.0",
