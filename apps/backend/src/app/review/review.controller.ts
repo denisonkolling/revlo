@@ -9,4 +9,9 @@ export class ReviewController {
   async getReviews(@Query('placeId') placeId: string) {
     return await this.reviewService.getReviews(placeId);
   }
+
+  @Get('save')
+  async getAndSaveReviews(@Query('placeId') placeId: string) {
+    return await this.reviewService.getAndSaveReviews(placeId);
+  }
 }

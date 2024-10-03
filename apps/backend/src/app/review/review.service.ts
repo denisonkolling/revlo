@@ -2,6 +2,8 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { Review } from './entities/review.entity';
 
 @Injectable()
 export class ReviewService {
@@ -10,6 +12,7 @@ export class ReviewService {
 
     constructor(
         private readonly httpService: HttpService,
+        private readonly em: EntityManager,
     ) {
         this.apiKey = process.env.GOOGLE_PLACES_API_KEY;
         this.baseUrl = process.env.GOOGLE_PLACES_BASE_URL;
@@ -55,4 +58,21 @@ export class ReviewService {
             );
         }
     }
+
+
+    async saveReviews(reviews: Review[]): Promise<Review[]> {
+        const newReviews = reviews.map(review => this.em.create(Review, review));
+        await this.em.persistAndFlush(newReviews);
+        return newReviews;
+    }
+
+    async getAndSaveReviews(placeId: string): Promise<Review[]> {
+        const reviewsData = await this.getReviews(placeId);
+        const reviewsWithPlaceId = reviewsData.map(review => ({
+            ...review,
+            place_id: placeId,
+        }));
+        return this.saveReviews(reviewsWithPlaceId);
+    }
+
 }
