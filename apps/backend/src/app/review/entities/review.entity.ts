@@ -28,4 +28,14 @@ export class Review {
 
     @Property({ columnType: 'varchar', nullable: true })
     placeId?: string;
+
+    @Property({ type: 'boolean', default: false })
+    isDeleted: boolean = false;
+
+    @Property({ type: 'int', default: 0 })
+    likes: number = 0;
+
+    @Property({ type: 'date', onUpdate: () => new Date(), nullable: true })
+    updatedAt?: Date;
+
 }
